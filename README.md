@@ -321,3 +321,12 @@ $ /Users/durwa004/Documents/PhD/Projects/1000_genomes/GB_project/genetic_burden_
 https://biodbnet-abcc.ncifcrf.gov/db/db2db.php
 https://david.ncifcrf.gov/gene2gene.jsp
 
+#Submit to EVA
+- Get decomposed vcf: https://genome.sph.umich.edu/wiki/Vt#Decompose
+```
+$ srun -N 1 --ntasks-per-node=4 --mem-per-cpu=2gb -t 6:00:00 -p small,amdsmall --pty bash
+$ /home/mccuem/durwa004/bin/vt/vt decompose -s thesis_intersect_pub.vcf.gz -o thesis_intersect_pub.decomposed.vcf
+$ /home/mccuem/durwa004/.conda/envs/ensembl-vep/bin/bgzip thesis_intersect_pub.decomposed.vcf
+$ /home/mccuem/durwa004/.conda/envs/ensembl-vep/bin/tabix thesis_intersect_pub.decomposed.vcf.gz
+```
+- Check for completeness (https://github.com/EBIvariation/vcf-validator)
