@@ -330,3 +330,17 @@ $ /home/mccuem/durwa004/.conda/envs/ensembl-vep/bin/bgzip thesis_intersect_pub.d
 $ /home/mccuem/durwa004/.conda/envs/ensembl-vep/bin/tabix thesis_intersect_pub.decomposed.vcf.gz
 ```
 - Check for completeness (https://github.com/EBIvariation/vcf-validator)
+-- installing this was a pain and required a lot of reformatting the .sh script
+```
+$ srun -N 1 --ntasks-per-node=4 --mem-per-cpu=2gb -t 6:00:00 -p small,amdsmall --pty bash
+$ git clone https://github.com/EBIvariation/vcf-validator.git
+$ cd vcf-validator
+$ sh install_dependencies.sh
+$ wget https://github.com/EBIvariation/vcf-validator/releases/download/v0.9.4/vcf_validator_linux
+$ chmod ugo+x vcf_validator_linux
+```
+-- run it!
+```
+$ srun -N 1 --ntasks-per-node=4 --mem-per-cpu=2gb -t 24:00:00 -p small,amdsmall --pty bash
+$ ./vcf_validator_linux -i /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz
+```
