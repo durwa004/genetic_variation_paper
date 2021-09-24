@@ -344,3 +344,8 @@ $ chmod ugo+x vcf_validator_linux
 $ srun -N 1 --ntasks-per-node=4 --mem-per-cpu=2gb -t 24:00:00 -p small,amdsmall --pty bash
 $ ./vcf_validator_linux -i /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz
 ```
+- Download file to my computer and then transfer using Filezilla (the ftp link wouldn't work otherwise)
+```
+$ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz ../EVA_submission 
+$ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz.tbi ../EVA_submission 
+```
