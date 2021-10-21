@@ -1,0 +1,12 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=1,walltime=24:00:00,mem=1g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.dbsnp_remap.out
+#PBS -e $PBS_JOBID.dbnsnp_remap.err
+#PBS -N dbsnp_remap.pbs
+#PBS -q lab-long
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/dbsnp/EVD_dbsnp/dbsnp_chrom_pos_files/
+
+sh ../move_done_files.sh

@@ -1,0 +1,18 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=12:00:00,mem=4g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.concordance_bcftools_gatk_NC_009155_3.out
+#PBS -e $PBS_JOBID.concordance_bcftools_gatk_NC_009155_3.err
+#PBS -N concordance_bcftools_gatk_NC_009155_3.pbs
+#PBS -q batch
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools
+
+module load bcftools
+mkdir concordance_NC_009155_3/
+bcftools isec -p concordance_NC_009155_3 /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools/../joint_bcftools_without_Prze/NC_009155_3.genotyped.vcf.gz /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools/../joint_gatk_without_Prze/NC_009155_3.genotyped.vcf.gz
+bcftools stats concordance_NC_009155_3/0000.vcf > concordance_NC_009155_3/0000.stats
+bcftools stats concordance_NC_009155_3/0001.vcf > concordance_NC_009155_3/0001.stats
+bcftools stats concordance_NC_009155_3/0002.vcf > concordance_NC_009155_3/0002.stats
+bcftools stats concordance_NC_009155_3/0003.vcf > concordance_NC_009155_3/0003.stats

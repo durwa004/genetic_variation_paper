@@ -1,0 +1,16 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=12:00:00,mem=4g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.bcftools_isec_dbsnp.out
+#PBS -e $PBS_JOBID.bcftools_isec_dbsnp.err
+#PBS -N bcftools_isec_dbsnp.pbs
+#PBS -q batch 
+module load bcftools
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/dbsnp/EVD_dbsnp/
+
+bcftools annotate --rename-chrs ../rename_dbsnp_chrs_with_chr.txt /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/dbsnp/EVD_dbsnp/GCA_000002305.1_current_ids.vcf.gz > GCA_000002305.1.chrs.vcf && /home/mccuem/shared/.local/conda/envs/HorseGenomeProject/bin/bgzip GCA_000002305.1.chrs.vcf && /home/mccuem/shared/.local/conda/envs/HorseGenomeProject/bin/tabix GCA_000002305.1.chrs.vcf.gz 
+#bcftools isec -p EVD_dbsnp_intersect GCA_000002305.1.refseq_chrs.remapped.vcf.gz ../../joint_intersect_without_Prze/thesis_intersect.vcf.gz
+
+#bcftools annotate --rename-chrs rename_dbsnp_chrs_with_chr.txt GCA_000002305.1_current_ids.vcf.gz > GCA_000002305.1.chrs.vcf && bgzip GCA_000002305.1.chrs.vcf && tabix GCA_000002305.1.chrs.vcf.gz

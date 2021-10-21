@@ -1,0 +1,13 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=12:00:00,mem=2g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.bcftools_isec_Clydesdale_pop.out
+#PBS -e $PBS_JOBID.bcftools_isec_Clydesdale_pop.err
+#PBS -N bcftools_isec_Clydesdale_pop.pbs
+#PBS -q small
+module load bcftools
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/rare_common_breed_pop/breed_pop_rare_common_vcfs
+
+bcftools isec -p Clydesdale_rare_pop_common breed_rare_common_vcfs/Clydesdale_rare.vcf.gz without_Clydesdale_common.vcf.gz

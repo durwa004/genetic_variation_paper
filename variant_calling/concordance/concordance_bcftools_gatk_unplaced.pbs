@@ -1,0 +1,18 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=12:00:00,mem=4g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.concordance_bcftools_gatk_unplaced.out
+#PBS -e $PBS_JOBID.concordance_bcftools_gatk_unplaced.err
+#PBS -N concordance_bcftools_gatk_unplaced.pbs
+#PBS -q batch
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools
+
+module load bcftools
+mkdir concordance_unplaced/
+bcftools isec -p concordance_unplaced /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools/../joint_bcftools_without_Prze/unplaced.genotyped.vcf.gz /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/concordance_gatk_bcftools/../joint_gatk_without_Prze/unplaced.genotyped.vcf.gz
+bcftools stats concordance_unplaced/0000.vcf > concordance_unplaced/0000.stats
+bcftools stats concordance_unplaced/0001.vcf > concordance_unplaced/0001.stats
+bcftools stats concordance_unplaced/0002.vcf > concordance_unplaced/0002.stats
+bcftools stats concordance_unplaced/0003.vcf > concordance_unplaced/0003.stats

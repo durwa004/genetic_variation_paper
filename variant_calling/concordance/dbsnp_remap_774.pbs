@@ -1,0 +1,13 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=1,walltime=96:00:00,mem=1g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.dbsnp_remap.out
+#PBS -e $PBS_JOBID.dbsnp_remap.err
+#PBS -N dbsnp_remap.pbs
+#PBS -q small
+source /home/mccuem/durwa004/.conda/envs/ensembl-vep/bin/activate ensembl-vep
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/dbsnp/EVD_dbsnp/../
+
+sh EVD_dbsnp/ncbi_remap_xzaju

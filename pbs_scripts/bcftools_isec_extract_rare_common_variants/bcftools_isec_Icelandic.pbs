@@ -1,0 +1,21 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=04:00:00,mem=4g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.bcftools_isex_Icelandic.out
+#PBS -e $PBS_JOBID.bcftools_isex_Icelandic.err
+#PBS -N bcftools_isec_Icelandic.pbs
+#PBS -q batch
+module load bcftools
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/breed_intersect_files/breed_rare_common_vcfs
+
+bcftools isec -p Icelandic_rare_Arabian_common Icelandic_rare.vcf.gz Arabian_common.vcf.gz
+bcftools isec -p Icelandic_rare_Belgian_common Icelandic_rare.vcf.gz Belgian_common.vcf.gz
+bcftools isec -p Icelandic_rare_Clydesdale_common Icelandic_rare.vcf.gz Clydesdale_common.vcf.gz
+bcftools isec -p Icelandic_rare_Morgan_common Icelandic_rare.vcf.gz Morgan_common.vcf.gz
+bcftools isec -p Icelandic_rare_QH_common Icelandic_rare.vcf.gz QH_common.vcf.gz
+bcftools isec -p Icelandic_rare_STB_common Icelandic_rare.vcf.gz STB_common.vcf.gz
+bcftools isec -p Icelandic_rare_TB_common Icelandic_rare.vcf.gz TB_common.vcf.gz
+bcftools isec -p Icelandic_rare_WP_common Icelandic_rare.vcf.gz WP_common.vcf.gz
+bcftools isec -p Icelandic_rare_Shetland_common Icelandic_rare.vcf.gz Shetland_common.vcf.gz

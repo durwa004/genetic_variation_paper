@@ -1,0 +1,21 @@
+#!/bin/bash -l
+#PBS -l nodes=1:ppn=8,walltime=04:00:00,mem=4g
+#PBS -m abe
+#PBS -M durwa004@umn.edu
+#PBS -o $PBS_JOBID.bcftools_isex_QH.out
+#PBS -e $PBS_JOBID.bcftools_isex_QH.err
+#PBS -N bcftools_isec_QH.pbs
+#PBS -q batch
+module load bcftools
+
+cd /home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/breed_intersect_files/breed_rare_common_vcfs
+
+bcftools isec -p QH_rare_Arabian_common QH_rare.vcf.gz Arabian_common.vcf.gz
+bcftools isec -p QH_rare_Belgian_common QH_rare.vcf.gz Belgian_common.vcf.gz
+bcftools isec -p QH_rare_Clydesdale_common QH_rare.vcf.gz Clydesdale_common.vcf.gz
+bcftools isec -p QH_rare_Icelandic_common QH_rare.vcf.gz Icelandic_common.vcf.gz
+bcftools isec -p QH_rare_Morgan_common QH_rare.vcf.gz Morgan_common.vcf.gz
+bcftools isec -p QH_rare_STB_common QH_rare.vcf.gz STB_common.vcf.gz
+bcftools isec -p QH_rare_TB_common QH_rare.vcf.gz TB_common.vcf.gz
+bcftools isec -p QH_rare_WP_common QH_rare.vcf.gz WP_common.vcf.gz
+bcftools isec -p QH_rare_Shetland_common QH_rare.vcf.gz Shetland_common.vcf.gz
