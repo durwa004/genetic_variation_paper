@@ -1,4 +1,4 @@
-setwd("/Users/durwa004/Documents/PhD/Projects/1000_genomes/GB_project/gb_analysis/")
+setwd("/Users/durwa004/Documents/Research/PhD_papers_for_publication/chapt2_genetic_variation/Final/Final_final/Frontiers in genetics/Submitted/Review/new_analysis/")
 
 #No homozygotes
 data <- read.table("no_homozygotes_summary.txt", header=T)
@@ -9,6 +9,18 @@ range(data$AF)
 
 t.test(data$AF[data$impact == "MODIFIER"], data$AF[data$impact != "MODIFIER"])
 
+table(data$consequence)
+length(data$consequence)
+
+#a = data.frame(table(data$gene[data$consequence == "3_prime_UTR_variant"]))
+#a = data.frame(table(data$gene[data$consequence == "5_prime_UTR_premature_start_codon_gain_variant"]))
+a = data.frame(table(data$gene[data$consequence == "frameshift_variant"]))
+a = data.frame(table(data$gene[data$consequence == "frameshift_variant&splice_region_variant"]))
+a = data.frame(table(data$gene[data$consequence == "missense_variant"]))
+a = data.frame(table(data$gene[data$consequence == "splice_acceptor_variant&intron_variant"]))
+a = data.frame(table(data$gene[data$consequence == "splice_acceptor_variant&splice_donor_variant&intron_variant"]))
+a = data.frame(table(data$gene[data$consequence == "stop_gained"]))
+a = data.frame(table(data$gene[data$consequence == "synonymous_variant"]))
 #All homozygotes
 data1 <- read.table("all_homozygotes_summary.txt", header=T)
 mean(data1$AC)

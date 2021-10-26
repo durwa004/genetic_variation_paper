@@ -44,6 +44,73 @@ intersect_doc <- merge(intersect_stats,DOC, by="Sample")
 summary(intersect_doc$nuclear_placed_DOC)
 intersect_doc$HetNRHomratio <- intersect_doc$nHets/intersect_doc$nNonRefHom
 
+#Add in all breeds for supplementary tables
+breed_info <- read.table("ibio_horses_with_breeds.txt", header=T, sep = "\t")
+intersect_breed <- merge(breed_info,DOC, by="Sample")
+
+breed_doc <- intersect_breed %>% 
+  group_by(Breed)  %>%
+  summarize(DOC = mean(nuclear_placed_DOC),
+            DOC_min = min(nuclear_placed_DOC),
+            DOC_max = max(nuclear_placed_DOC))
+
+mean(intersect_breed$nuclear_placed_DOC)
+
+#Estimate missingness
+breed_info <- read.table("ibio_horses_target_breeds_other.txt", header=T, sep = "\t")
+missing_ind <- read.table("/Users/durwa004/Documents/Research/PhD_papers_for_publication/chapt2_genetic_variation/Final/Final_final/Frontiers in genetics/Submitted/Review/new_analysis/thesis_intersect_miss_by_ind.imiss", header=T)
+summary(missing_ind$F_MISS)
+colnames(missing_ind) <- c("Sample", "N_DATA", "N_GENOTYPES_FILTERED", "N_MISS", "F_MISS")
+missing_ind_doc <- merge(missing_ind, DOC, by="Sample")
+missing_breed <- merge(missing_ind_doc, breed_info, by="Sample")
+
+missing_site <- read.table("/Users/durwa004/Documents/Research/PhD_papers_for_publication/chapt2_genetic_variation/Final/Final_final/Frontiers in genetics/Submitted/Review/new_analysis/thesis_intersect_miss_by_site.lmiss", header=T)
+miss_site <- missing_site %>% 
+  group_by(CHR)  %>%
+  summarize(C_MISS = mean(F_MISS))
+miss_site <- miss_site[2:33,]
+
+#Correlation between missingness and DOC
+cor.test(x=missing_breed$nuclear_placed_DOC,y=missing_breed$F_MISS, method = "pearson", use='complete.obs')
+
+#Plot missingness details
+cbPalette <- c("#999999", "#FFCCFF", "#000000", "#E69F00", "#56B4E9", "#009E73", "#F0E442", "#0072B2", "#D55E00", "#CC79A7", "#CC6600")
+x = ggplot(missing_breed, aes(x=Sample,y=F_MISS)) + theme_bw() + ylab("Average missingness") + 
+  xlab("Individual horse") + geom_point(aes(color=Breed))  + 
+  scale_y_continuous(labels=comma, limits = c(0,0.6)) + geom_smooth() +
+  scale_color_manual(values=cbPalette) +
+  theme(panel.grid = element_blank(), panel.border = element_blank(), axis.line.x = element_line(),
+        axis.line.y = element_line(), axis.text.x = element_blank(), axis.ticks.x = element_blank(), 
+        axis.text = element_text(size=10), axis.title = element_text(size=12,face="bold"),
+        legend.title = element_blank())
+y = ggplot(missing_breed, aes(x=nuclear_placed_DOC,y=F_MISS)) + theme_bw() + ylab("Average missingness") + 
+  xlab("Depth of Coverage") + geom_point(aes(color=Breed))  + 
+  scale_x_continuous(limits = c(0,50)) +
+  scale_y_continuous(labels=comma, limits = c(0,0.6))+
+  scale_color_manual(values=cbPalette) +
+  theme(panel.grid = element_blank(), panel.border = element_blank(), axis.line.x = element_line(),
+        axis.line.y = element_line(), 
+        axis.text = element_text(size=10), axis.title = element_text(size=12,face="bold"),
+        legend.title = element_blank())
+z = ggplot(miss_site, aes(x = CHR, y=C_MISS)) + theme_bw() + ylab("Average missingness") + 
+  xlab("Individual site")  + geom_point() +
+  scale_y_continuous(labels=comma, limits = c(0,0.1)) +
+  theme(panel.grid = element_blank(), panel.border = element_blank(), axis.line.x = element_line(),
+        axis.line.y = element_line(), legend.position = "None", axis.text.x = element_text(angle = 90),
+        axis.text = element_text(size=10), axis.title = element_text(size=12,face="bold"),
+        legend.title = element_blank())
+
+
+first_row <- plot_grid(x,y,z, labels = c("A", "B", "C"), ncol=1)
+
+save_plot("/Users/durwa004/Documents/Research/PhD_papers_for_publication/chapt2_genetic_variation/Final/Final_final/Frontiers in genetics/Submitted/Review/new_analysis/Missing_figures.tiff", first_row, base_height = 12, base_width = 6, dpi = 300)
+
+#Save as dual plot
+save_plot("../../Papers_for_publication/Nature_genetics/Figures/nvariants_nhom_EMMEANS.tiff", first_row, base_height = 6,base_width = 12)
+
+
+
+#Then continue
 table(intersect_doc$breed)
 
 kruskal.test(intersect_doc$HetNRHomratio, intersect_doc$breed)
@@ -54,6 +121,7 @@ intersect_br <- intersect_doc %>%
 
 kruskal.test(intersect_br$HetNRHomratio, intersect_br$breed)
 kruskal.test(intersect_br$tstv, intersect_br$breed)
+
 
 summary(lm(intersect_br$tstv ~ intersect_br$breed))
 gb_m <- (lm(tstv ~ breed + nuclear_placed_DOC,data=intersect_br))
@@ -282,7 +350,7 @@ save_plot("../bcftools_stats_output/10_breeds_tstv.tiff", x, base_height = 3.5, 
 setwd("/Users/durwa004/Documents/PhD/Projects/1000_genomes/GB_project/bcftools_stats_output/")
 #Categorize AF: Using python
 AF_data <- read.table("all_horses_AF_freq_info.txt",header=T)
-AF_data$means <- rowMeans(AF_data[,2:536])
+AF_data$means <- rowMeans(AF_data[,2:535])
 
 #AF
 x = ggplot(AF_data, aes(x=AF, y=means)) + theme_bw() + ylab("Number of variants") + 
@@ -309,9 +377,10 @@ save_plot("535_horses_AF_categories.tiff", x, base_height = 3.5, base_width = 6)
 
 
 #Mean number of singletons
-singleton <- AF_data[1,2:53]
+singleton <- AF_data[1,2:535]
 singleton <- as.numeric(singleton)
 mean(singleton)
+range(singleton)
 
 singleton_data <- read.table("10_breeds_singletons.txt",header=F)
 kruskal.test(singleton_data$V3, singleton_data$V2)
