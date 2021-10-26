@@ -349,3 +349,17 @@ $ ./vcf_validator_linux -i /home/mccuem/shared/Projects/HorseGenomeProject/Data/
 $ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz ../EVA_submission 
 $ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/without_dz_cases/thesis_intersect_pub.decomposed.vcf.gz.tbi ../EVA_submission 
 ```
+
+###Edits for reviewers###
+- Add in missingness
+```
+$ sbatch /home/mccuem/shared/Projects/HorseGenomeProject/scripts/EquCab3/genetic_variation_paper/pbs_scripts/get_missingness.slurm
+$ sbatch /home/mccuem/shared/Projects/HorseGenomeProject/scripts/EquCab3/genetic_variation_paper/pbs_scripts/get_missingness_site.slurm
+$ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/thesis_intersect_miss_by_site.lmiss ../new_analysis/
+$ scp durwa004@mesabi.msi.umn.edu://home/mccuem/shared/Projects/HorseGenomeProject/Data/ibio_EquCab3/ibio_output_files/joint_gvcf/joint_intersect_without_Prze/thesis_intersect_miss_by_ind.imiss ../new_analysis/
+$ genetic_variation_bcftools_stats_analysis.R
+```
+
+- Calculate Fst
+Average for each breed https://www.nature.com/articles/nature09534.pdf
+Between high and low allele frequency regions between breeds

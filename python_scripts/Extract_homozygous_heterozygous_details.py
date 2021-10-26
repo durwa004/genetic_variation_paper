@@ -7,10 +7,10 @@ path = "/Users/durwa004/Documents/PhD/Projects/1000_genomes/GB_project/gb_analys
 
 #Need to get header from vcf file
 horse_breed = {}
-with gzip.open(path + "/../bcftools_stats_output/NC_001640_1.genotyped.vcf.gz", "rt") as input_file:
+with open(path + "/no_homozygotes_details.txt", "r") as input_file:
     for line in input_file:
         line = line.rstrip("\n").split("\t")
-        if line[0] == "#CHROM":
+        if line[0] == "CHROM":
             for i in range(len(line)):
                 horse_breed[line[i]] = "A"
 
@@ -37,44 +37,50 @@ with open(path + "/no_homozygotes_details.txt", "r") as input_file, open(path + 
         if line[7] != "MODIFIER":
             print(line[8], file = output_file)
             coding +=1
+        else:
+            print(line[8], file = output_file)
+
+#split -l 500 no_homozygotes_genes.txt no_homozygotes_genes_
 
 #Create accession/gene symbol dictionary
 genes = {}
-with open(path + "/no_homozygotes_genes_symbols.txt", "r") as genes_file:
+with open("no_homozygotes_genes_symbols.txt", "r") as genes_file:
    genes_file.readline()
    for line1 in genes_file:
        line1 = line1.rstrip("\n").split("\t")
-       a = line1[0].split(".")
        if "-" in line1[1]:
            if line1[0] in genes.keys():
-               genes[line1[0]][line1[0]] = {}
+               continue
            else:
-               genes[line1[0]] = {}
-               genes[line1[0]][line1[0]] = {}
+               genes[line1[0]] = line1[0]
        else:
-           if line1[1] in genes.keys():
-               genes[line1[1]][line1[0]] = {}
+           if line1[0] in genes.keys():
+               if line1[1] == genes[line1[0]]:
+                   continue
+               else:
+                   b = genes[line1[0]] + "_" + line1[0]
+                   genes[line1[0]] = b
            else:
-               genes[line1[1]] = {}
-               genes[line1[1]][line1[0]] = {}
+               genes[line1[0]] = line1[1]
 print(len(genes))
 
-count = 0
-for key in genes.keys():
-    for key1 in genes[key].keys():
-        count +=1
-print(count)
-
 #Get consequence and AF etc of these variants (use R)
-with open(path + "/no_homozygotes_details.txt", "r") as input_file, open(path + "/no_homozygotes_summary.txt", "w") as output_file:
+with open(path + "/no_homozygotes_details.txt", "r") as input_file, open("no_homozygotes_summary.txt", "w") as output_file:
     input_file.readline()
     print("AC\tAF\tconsequence\timpact\tgene\tlof", file = output_file)
     for line in input_file:
         line = line.rstrip("\n").split("\t")
-        gene = line[8]
-        if gene == "":
+        gene = line[8].split(".")
+        if gene[0] == "":
             gene = "NA"
+        else:
+            if gene[0] in genes.keys():
+                gene = genes[gene[0]]
+            else: 
+                print(gene)
         print(line[4], line[5], line[6], line[7], gene, line[11], sep = "\t", file = output_file)
+
+
 
 ##############################################################################
 ########################    All homozygotes    ########################
