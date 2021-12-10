@@ -52,9 +52,11 @@ if __name__ == '__main__':
              )
     
     with open(f"{chr_ids}/vcfs_for_merging.list", "w") as f:
-        for file_name in os.listdir(chr_ids):
-            if file_name.endswith(".vcf"):
-                print(file_name, file=f)
+        for directory in os.listdir(chr_ids):
+            if os.path.isdir(directory) == True:
+                for file_name in os.listdir(f"{chr_ids}/{directory}"):
+                    file_name1 = file_name + ".vcf.gz"
+                    print(f"{chr_ids}/{directory}/{file_name}/{file_name1}", file=f)
     
     pbs = os.path.join(os.getcwd(), "MergeVCFs.slurm")
     
